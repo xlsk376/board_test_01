@@ -91,33 +91,32 @@ BoardController
 - 삭제하기 클릭시 해당 게시판 번호를 가져옴
 ```
 @RequestMapping(value = "/board/boardDelete")
-	public String boardDelete(HttpServletRequest request, Model model) {
+public String boardDelete(HttpServletRequest request, Model model) {
 		
-		int num = Integer.parseInt(request.getParameter("num"));
+	int num = Integer.parseInt(request.getParameter("num"));
+	dao.boardDelete(num);
 		
-		dao.boardDelete(num);
-		
-		return "/board/boardDeletePro";
-	}
+	return "/board/boardDeletePro";
+}
 ```
 BoardDAO
 - 가져온 게시판 번호를 보고 게시글 삭제
 ```
 public void boardDelete(int num) {
-		try {
-			conn = dataSource.getConnection();
-			String sql = "DELETE FROM board WHERE num=?";
-			pstmt = conn.prepareStatement(sql);
+	try {
+		conn = dataSource.getConnection();
+		String sql = "DELETE FROM board WHERE num=?";
+		pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setInt(1, num);
-			pstmt.executeUpdate();
+		pstmt.setInt(1, num);
+		pstmt.executeUpdate();
 			
-		}catch(Exception e) {
-			e.printStackTrace();
-		}finally {
-			finallyClose();
-		}
+	}catch(Exception e) {
+		e.printStackTrace();
+	}finally {
+		finallyClose();
 	}
+}
 ```
 boardDeletePro.jsp
 - 게시글 삭제 알람창후 메인페이지 이동
